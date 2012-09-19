@@ -1,0 +1,857 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]> <html class="no-js ie6" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js ie7" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js ie8" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!-->  <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	
+	<title>OOP Javascript &amp; JS Architecture</title>
+	
+	<meta name="description" content="A jQuery library for modern HTML presentations">
+	<meta name="author" content="Caleb Troughton">
+	<meta name="viewport" content="width=1024, user-scalable=no">
+	
+	<!-- Core and extension CSS files -->
+	<link rel="stylesheet" href="core/deck.core.css">
+	<link rel="stylesheet" href="extensions/goto/deck.goto.css">
+	<link rel="stylesheet" href="extensions/menu/deck.menu.css">
+	<link rel="stylesheet" href="extensions/navigation/deck.navigation.css">
+	<link rel="stylesheet" href="extensions/status/deck.status.css">
+	<link rel="stylesheet" href="extensions/hash/deck.hash.css">
+	
+	<!-- Theme CSS files (menu swaps these out) -->
+	<link rel="stylesheet" id="style-theme-link" href="themes/style/tikal-monokai.css">
+	<link rel="stylesheet" id="transition-theme-link" href="themes/transition/horizontal-slide.css">
+	
+	<!-- Custom CSS just for this page -->
+	<link rel="stylesheet" href="css/introduction.css">
+	<link rel="stylesheet" href="css/shCore.css">
+	<link rel="stylesheet" href="css/shCoreDefault.css">
+	
+	<style type="text/css">
+		/* ANIMATION FUNCTIONS */
+		
+		@-webkit-keyframes birdAttack {
+			0%   { top: 300px; left: 20px;-webkit-transform: rotate(65deg);}
+			40%  { top: 200px; left: 500px}
+			100% { top: 300px; left: 1280px;-webkit-transform: rotate(-65deg);}
+		}
+		
+		@-webkit-keyframes birdAttackLow {
+			0%   { top: 500px; left: 150px;-webkit-transform: rotate(95deg);}
+			50%  { top: 300px; left: 550px}
+			100% { top: 500px; left: 1280px;-webkit-transform: rotate(-25deg);}
+		}
+		
+		@-webkit-keyframes birdAttackLow2 {
+			0%   { top: 450px; left: 10px;-webkit-transform: rotate(50deg);}
+			60%  { top: 350px; left: 450px}
+			100% { top: 450px; left: 1280px;-webkit-transform: rotate(-35deg);}
+		}
+		
+		@-webkit-keyframes birdAttackYellow {
+			0%   { top: 250px; left: 100px;-webkit-transform: rotate(75deg);}
+			55%  { top: 320px; left: 695px}
+			100% { top: 250px; left: 1280px;-webkit-transform: rotate(-45deg);}
+		}
+		
+		/**/
+		.angry-bird {
+			/*box-shadow: 0 10px 10px #fff;*/
+			position: absolute;
+		}
+		.bird-attack {
+			-webkit-animation: birdAttack 6s infinite;
+		}
+		.bird-attack-low {
+			-webkit-animation: birdAttackLow 7s infinite;
+		}
+		
+		.bird-attack-low2 {
+			-webkit-animation: birdAttackLow2 7s infinite;
+		}
+		
+		.bird-attack-yellow {
+			-webkit-animation: birdAttackYellow 6s infinite;
+		}
+	</style>
+	<script src="js/modernizr.custom.js"></script>
+</head>
+
+<body class="deck-container">
+
+<!--section class="slide">
+	<h2>"So much complexity in software comes from trying to make one thing do two things." - Ryan Singer (37signals)</h2>
+	<h2>"A clever person solves a problem. A wise person avoids it." - Einstein</h2>
+	<!-- <h2>"If testing seems hard, there's something wrong with your design." - Sandi Metz</h2> -->
+	<!-- <h2>"If you've chosen the right data structures and organized things well, the algorithms will almost always be self-evident." - Rob Pike</h2> --->
+</section -->
+
+<section class="slide" id="title-slide">
+	<h1 id="title">OOP Javascript &amp; JS Architecture</h1>
+	<div id="title-description">
+		<!-- <div class="center rhino size-3"></div> -->
+		<h2>By Oren Farhi / JS &amp; UI Developer <a href="http://www.tikalk.com/javascript/dive-oop-architecture-js">@Tikal</a></h2>
+	</div>
+</section>
+
+<section class="slide">
+	<h2>Nowdays: Single page app is the thing!</h2>
+	<ul>
+		<li>Gmail</li>
+		<li>Twitter (remember the # in the location bar?)</li>
+		<!-- <li>Online Office Suites</li> -->
+		<li>Grooveshark (online cloud music player/storage)</li>
+	</ul>
+	<div>
+		<img src="images/gmail-logo.png" alt="" width="240px" height="160px" class="size-2 inline"/>
+		<img src="images/twitter-follow-bird.jpg" alt="" width="240px" height="160px" class="size-2 inline"/>
+		<img src="images/grooveshark-logo.jpg" alt="" width="240px" height="160px" class="size-2 inline"/>
+	</div>
+</section>
+
+<!-- move to the start? -->
+<!-- <section class="slide" id="base-structure">
+	<h2>The Base Structure For A UI Application</h2>
+	<div>
+		<img src="images/flow-chart-general.png">
+	</div>
+	
+</section> -->
+
+<section class="slide" id="base-structure">
+	<h2>The Base Structure For A JS Application</h2>
+	<div>
+		<img src="images/flow-chart-actual.png" />
+	</div>
+	
+</section>
+
+<section class="slide" id="agenda">
+	<h2>The Agenda For Today</h2>
+	<div>
+		<img src="images/flow-chart-angry-birds.png" />
+	</div>
+</section>
+
+<!-- <section class="slide" id="issues">
+	<h2>The issues in js development today</h2>
+	<ul class="slide">
+		<li>free-form</li>
+		<li>too many libraries</li>
+		<li>no reuse</li>
+		<li>no architecture</li>
+		<li class="slide">spaghetti code (!!!)
+			<img src="images/spaghetti.jpg" alt="" class="size-2"/>
+		</li>
+	</ul>
+</section> -->
+
+<!-- <section id="app-framework" class="slide">
+	<h2>The Application Framework Eco-System</h2>
+	<ul>
+		<li>Seperated Modules</li>
+		<li>Main Application Controller</li>
+		<li>Location Management (History)</li>
+		<li>Templating Engines (Views)</li>
+		<li>Web Storage</li>
+		<li>JS Frameworks</li>
+		<li>JS Unit Testing</li>
+	</ul>
+</section> -->
+<section class="slide" id="lets-play">
+	<div id="bblack" class="bird-attack angry-bird"><img src="images/black.png" width="70px" height="80px"/></div>
+	<div id="bred" class="bird-attack-low angry-bird"><img src="images/red.png" width="70px" height="60px"/></div>
+	<div id="byellow" class="bird-attack-yellow angry-bird"><img src="images/yellow.png" width="70px" height="60px"/></div>
+	<div id="bblue" class="bird-attack-low2 angry-bird"><img src="images/blue.png" width="70px" height="60px"/></div>
+	<h1>Lets Play!</h1>
+</section>
+
+<section class="slide" id="step-1">
+	<h2><span class="red-bird"></span>Step 1: The Red Bird</h2>
+	<!-- Show a screenshot -->
+	<h3>RedAngryBird.js</h3>
+	<pre class="brush: js">
+		//- 1. properties
+		var color = "red";
+		var birdName = "redHat";
+		var powers = ["emptyHands"];
+		var isAttacked = false;
+		//- 2. behaviour functions
+		function attack($bird, animationConfig) {
+			isAttacked = true;
+			arm($bird);
+			$bird.animate(animationConfig);
+		}
+		function removeBird($bird, removeConfig) {
+			if (isAttacked)
+				$bird.animate(removeConfig);
+		}
+		function getBirdHitScore ($bird) {
+			return calculateScore($bird.position() + $nowPig.position());
+		}
+		//- 3. creating red bird
+		var redBird = $("#redBird");
+		//- 4. attaching events
+		redBird.on("click", function(this){
+			//- pseudo dynamic animationConfig
+			attack($(this), {left: 1000, top: 250});
+		});
+	</pre>
+	
+</section>
+
+<!-- redBird: modular -->
+<section class="slide">
+	<h2><span class="red-bird"></span>Step 1: The Red Bird - Revisited</h2>
+	<h3>RedAngryBird.js</h3>
+	<pre class="brush: js">
+		//- 1. class definition
+		function RedAngryBird(htmlId, config) {
+			//- 2. properties
+			this.color = "red";
+			this.name = config.name;
+			this.powers = config.powers;
+			this.animate = {attack: {}, destroy: {}};
+			this.isAttacked = false;
+			this.htmlId = htmlId;
+			this.$bird = $("#" + htmlId);
+		}
+		//- 3. methods of the class
+		RedAngryBird.prototype = {
+			attack: function () {
+				this.isAttacked = true;
+				this.arm();
+				this.$bird.animate(this.animate.attack);
+			},
+			
+			remove: function () {
+				if (this.isAttacked) {
+					this.$bird.animate(this.animate.destroy);
+				}
+			}
+		};
+		//- 4. creating instances of the class
+		var redHat = new RedAngryBird("jim", {name: "jim"});
+		var redNosed = new RedAngryBird("red", {name: "red"});
+		redHat.attack();
+		redHat.remove();
+	</pre>
+</section>
+
+<section class="slide" id="red-demo-slide">
+	<button id="red-demo">Play!</button>
+	<iframe id="red-frame-demo" src="" frameborder="0" style="height: 80%; width: 100%;"></iframe>
+</section>
+
+<section class="slide" id="step-2">
+	<h1>Step 2: Enter The Blue Bird</h1>
+</section>
+
+<section class="slide">
+	<h2><span class="blue-bird"></span>Step 2: Rundown</h2>
+	<ul>
+		<!-- <li>Function Class</li> -->
+		<li>Inheritance</li>
+		<li>Function Overloading</li>
+		<li>Reuse</li>
+	</ul>
+</section>
+
+<!--section class="slide" id="spaghetti">
+	<h2><span class="blue-bird"></span>Step 2: Enter The Blue Bird</h2>
+	<h3>BlueAngryBird.js</h3>
+	<pre class="brush: js">
+		//- changed RED to BLUE
+		var color = "blue";
+		var birdName = "twitter";
+		var powers = ["emptyHands"];
+		var isAttacked = false;
+		//- same functions
+		function attack($bird, animationConfig) {
+			isAttacked = true;
+			arm($bird);
+			$bird.animate(animationConfig);
+		}
+		function removeBird($bird, removeConfig) {
+			if (isAttacked)
+				$bird.animate(removeConfig);
+		}
+		function getBirdHitScore ($bird) {
+			return calculateScore($bird.position() + $nowPig.position());
+		}
+		//- changed html ID
+		var twitter = $("#twitter");
+		twitter.on("click", function(this){
+			//- pseudo dynamic animationConfig
+			attack($(this), {left: 1000, top: 250});
+		});
+	</pre>
+</section-->
+
+<section class="slide">
+	<h2><span class="blue-bird"></span>Step 2: Enter The Blue Bird</h2>
+	<h3>AngryBird.js</h3>
+	<div class="slide"><pre class="brush: js">//- 1. class definition
+function AngryBird(htmlId, config) {
+	//- 2. properties
+	//- NEW dyanmic color
+	this.color = config.color;
+	this.name = config.name;
+	this.powers = config.powers;
+	this.animate = {attack: {}, destroy: {}};
+	this.isAttacked = false;
+	this.$bird = $(htmlId);
+}</pre><div>
+		<div class="slide"><pre class="brush: js">//- 3. methods of the class
+AngryBird.prototype = {
+	attack: function () {
+		this.isAttacked = true;
+		this.arm();
+		this.$bird.animate(this.animate.attack);
+	},
+	
+	remove: function () {
+		if (this.isAttacked) {
+			this.$bird.animate(this.animate.destroy);
+		}
+	}
+};</pre></div>
+<div class="slide"><pre class="brush: js">//- 4. creating instances of the class
+var twitter = new AngryBird("#twitter", {color: "blue", name: "jim"});
+var redHat = new AngryBird("#red", {color: "red", name: "red"});
+twitter.attack();
+redHat.attack();
+redHat.remove(); //- removes only "redHat" from the DOM
+</pre></div>
+</section>
+
+<section class="slide">
+	<button id="blue-demo">Play!</button>
+	<iframe id="blue-frame-demo" src="" frameborder="0" style="height: 80%; width: 100%;"></iframe>
+</section>
+
+<section class="slide">
+	<h2><span class="blue-bird"></span>Step 2: Blue Bird - New Powers</h2>
+	<h3>BlueAngryBird.js</h3>
+	<div class="slide"><pre class="brush: js">//- 1. define a class
+function BlueAngryBird () {}</pre></div>
+<div class="slide"><pre class="brush: js">//- 2. define the inheritance
+BlueAngryBird.prototype = new AngryBird;</pre></div>
+<div class="slide"><pre class="brush: js">//- 3. fix the constructor
+BlueAngryBird.prototype.constructor = BlueAngryBird;</pre></div>
+<div class="slide"><pre class="brush: js">//- 4.1 overide the arm method with a special arm
+BlueAngryBird.prototype.arm = function() {
+	this.powers.push(new AngryBird(/*..*/));
+	this.powers.push(new AngryBird(/*..*/));
+	this.powers.push(new AngryBird(/*..*/));
+	this.$bird.on("click", this.split.bind(this));
+}
+//- 4.2 adding NEW method - split birds
+BlueAngryBird.prototype.split = function() {
+	for(var i = 0; i < this.powers.length; i++) {
+		this.usePower(this.power[i]);
+	}
+}</pre></div>
+<div class="slide"><pre class="brush: js">//- 5. create the bird
+var twitter = new BlueAngryBird("#twitter", {name: "twitter"});
+console.log(twitter.color); //- outputs "blue"
+twitter.arm(); //- invokes the special method</pre></div>
+	
+</section>
+
+<section class="slide" id="step-3">
+	<h1>Step 3: The Red Bird - with Backbone Framework</h1>
+</section>
+
+<section class="slide">
+	<h2><span class="red-bird"></span>Step 3: Rundown</h2>
+	<ul class="slide">
+		<li>JS Class</li>
+		<li>Modular JS Framework (Backbone.js)</li>
+	</ul>
+</section>
+
+<section class="slide">
+	<h2><span class="red-bird"></span>Step 3: The Red Bird Model</h2>
+	<h3>RedBirdModel.js</h3>
+	<pre class="brush: js">
+		var RedBirdModel = Backbone.Model.extend({
+			//- 1. fires events when data change 
+			//- 2. define methods which handles the only the data - 
+			// usually - JSON
+			isAttacked: function(state) {
+				if (state === undefined) {
+					return this.get("isAttacked");
+				}
+				this.save({isAttacked: state});
+			},
+
+			poof: function() {
+				this.save({isDismissed: true});
+			}
+		});
+	</pre>
+
+	</section>
+
+<section class="slide">
+	<h2><span class="red-bird"></span>Step 3: The Red Bird View</h2>
+	<h3>RedBirdView.js</h3>
+	<pre class="brush: js">var RedBirdView = Backbone.View.extend({
+			// 1. Cache the template function for a single red.
+			template: _.template($('#redBird-template').html()),
+
+			// 2. The DOM events specific to an item.
+			events: {
+			  "click"              : "attack"
+			},
+
+			// 3. binding the model and the view
+			initialize: function() {
+			  _.bindAll(this, 'render', 'remove');
+			  this.model.bind('change', this.render);
+			  this.model.bind('destroy', this.remove);
+			},
+
+			// 4. Re-render the contents of the bird with template
+			render: function() { ... }
+
+			// 5. Toggle the "done" state of the model.
+			attack: function() {
+			  if (!this.model.isAttacked()) {
+				this.model.isAttacked(true);
+			  } else {
+				this.model.poof();
+			  }
+			}
+		  });</pre>
+</section>
+
+<section class="slide" id="step-4">
+	<h1>Step 4: Yellow Bird Dependancy</h1>
+</section>
+
+<section class="slide">
+	<button id="yellow-demo">Play!</button>
+	<iframe id="yellow-frame-demo" src="" frameborder="0" style="height: 80%; width: 100%;"></iframe>
+</section>
+
+<section class="slide">
+	<h2><span class="yellow-bird"></span>Step 4: Rundown</h2>
+	<ul>
+		<li>Templating</li>
+		<li>Asynchronos Dependancy Management (AMD)</li>
+		<li>Model-View</li>
+		<li>Privacy</li>
+	</ul>
+</section>
+
+<section class="slide">
+	<h2><span class="yellow-bird"></span>Step 4: Yellow Bird - Dependancy &amp; Template (underscore.js)</h2>
+	<h3>bird.html</h3>
+	<pre class="brush: html">
+		<!-- bird.html Angry Bird Skeleton Template -->
+		<!-- <%= js variable %> -->
+		<div class="bird <%= birdColor %>">
+			<div class="head"><%= birdHead %></div>
+			<div class="body"><%= birdBody %></div>
+			<div class="legs"><%= birdLegs %></div>
+		</div>
+	</pre>
+	<h3>use:</h3>
+	<pre class="brush: js">
+		var birdData = {
+			birdColor: "yellow",
+			birdHead: {/*...*/},
+			birdBody: {/*...*/},
+			birdLegs: {/*...*/}
+		}
+		var compiledTemplate = _.template(birdTemplateString, birdData);
+	</pre>
+</section>
+
+<section class="slide" id="requirejs"> 
+	<h2><span class="yellow-bird"></span>Step 4: Yellow Bird - Require.js</h2>
+	<pre class="brush: js">
+//- general
+require(
+	["AngryBird.js", "RedAngryBird.js", "jquery", "backbone"], 
+	function(angryBird, redAngryBird, $, Backbone){
+	//- optional...
+});
+
+//- good for modules
+define(
+	["AngryBird.js", "jquery", "backbone"], 
+	function(angryBird, $, Backbone){
+	//- definition of the module
+});
+	</pre>
+</section>
+
+<section class="slide">
+	<h2><span class="yellow-bird"></span>Step 4: Yellow Bird - Dependancy</h2>
+	<h3>AngryBirdView.js</h3>
+	<pre class="brush: js">
+//- using require.js
+define([
+	"jquery", "underscore", "backbone",
+	"text!templates/bird.html"],
+	function($, _, Backbone, birdTemplate) {
+		var bird = Backbone.View.Extend({
+			attack: function() {...},
+			arm: function() {...}
+		})
+		
+		return bird;
+	}
+)
+	</pre>
+</section>
+
+<section class="slide" id="bird-dependancy">
+	<h2><span class="yellow-bird"></span>Step 4: Yellow Bird - Dependancy Extending &amp; Privacy</h2>
+	<h3>YellowBirdView.js</h3>
+	<pre class="brush: js">
+define([
+	//- js files
+	"jquery", "underscore", "backbone", 
+	"AngryBirdView",
+	"text!templates/bird.html"],
+	function($, _, B, AngryBird, birdTemplate) {
+		//- 1. a private variable
+		var birdSpeed = 2;
+
+		//- 2. defintion of the yellow bird
+		var yellowBird = AngryBird.Extend({
+			//- 3. overrides AngryBird arm method
+			arm: function() {...},
+			
+			//- 4. private birdSpeed Property
+			flyFast: function () {
+				birdSpeed *= 2;
+				this.fly();
+			}
+		})
+		return yellowBird;
+	}
+)
+var yellowChello = require("YellowBirdView");
+yellowChello.flyFast(); //- invokes flyFast method
+yellowChello.birdSpeed *= 5; //- JS Error - birdSpeed not defined
+	</pre>
+</section>
+
+<section class="slide" id="step-5">
+	<h1>Step 5: The Level Module</h1>
+</section>
+
+<section class="slide">
+	<h2>Step 5: Rundown</h2>
+	<ul>
+		<li>Url Location Bar</li>
+		<li>Local Storage</li>
+	</ul>
+	<img src="images/levels-menu.jpg" />
+</section>
+
+<section class="slide" id="level-module">
+	
+	<h2>Step 5: The Level Module</h2>
+	<h3>GameRouter.js</h3>
+	<pre class="brush: js">
+var GameRouter = Backbone.Router.extend({
+	//- 1. entry points in location bar
+	routes: {
+		"help":                 "showHelp",    // #help
+		"levels/:level":        "goTolevel",  // #level/1
+		"levels/:level/:scene": "goToScene"   // #level/1/1
+	},
+
+	//- 2. callbacks to handle entry points
+	showHelp: function() { /*...*/ },
+
+	goToLevel: function(level, scene) { /* */ }
+	
+	goToScene: function(level, scene) { /* */ }
+});
+	</pre>
+	
+</section>
+
+<section class="slide">
+	
+	<h2>Step 5: The Level Module - Replaying successed levels</h2>
+	<h3>GameMenuManager.js</h3>
+	<pre class="brush: js">
+//- called from Levels Menu Module
+var GameMenuManager = Backbone.View.extend({
+
+	//- 1. define dom events
+	events: {
+		"click .scene": "startScene"
+	},
+
+	//- 2. start to play a scene
+	startScene: function(ev) {
+		GameRouter.navigate("levels/1/2", {trigger: true, replace: true});
+	}
+})
+	</pre>
+	
+</section>
+
+<section class="slide" id="storage">
+	<h2>Step 5: Replaying those Levels!</h2>
+	<h3>GameStorage.js</h3>
+	<pre class="brush: js">
+//- Game Storage Module
+define([
+	"jquery", "underscore", "backbone",
+	"Store"
+	function($, _, B, Store) {
+		var GameStorage = Backbone.Model.extend({
+			
+			// Saves user details, score, success
+			localStorage: new Store("angry-birds"),
+			
+			setLevelSuccess: function(level, isPassed) { 
+				/*...*/
+			},
+
+			setScore: function(level, score) {
+				/*...*/
+			}
+		})
+		
+		return GameStorage;
+	}
+)
+	</pre>
+	
+</section>
+
+<section class="slide" id="step-6">
+		
+	<h1>Step 6: The Game Controller </h1>
+	
+</section>
+
+<section class="slide" id="controller">	
+	<h2>Step 6: Game Controller</h2>
+	<div>
+		<img src="images/flow-chart-controller.png" />
+	</div>
+
+</section>	
+<!-- <section class="slide">
+	<h2>Step 6: Rundown</h2>
+	<ul>
+		<li>One Place to manage all</li>
+	</ul>
+</section> -->
+
+<section class="slide">
+	<h2>Step 6: The Game Controller - Usage</h2>
+	<h3>BlueAngryBird.js</h3>
+	<pre class="brush: js">
+define([
+	//- js files
+	"jquery", "underscore", "backbone", 
+	"AngryBirdView",
+	"text!templates/bird.html"],
+	function($, _, B, AngryBird, birdTemplate) {
+		var blueBird = AngryBird.extend({
+			initialize: function(gameController) {
+				//- 1. listen to api game events 
+				this.gameController = gameController;
+				gameController.listen("bird-success-hit", this.hooray);
+			},
+			
+			attack: function() {
+				/* some statments of arm method */
+				//- 2. notify the game that my bird was armed
+				if (this.model.isSuccessAttack) {
+					this.gameController.notify("bird-success-hit", this.model.birdId);
+				}
+			},
+			
+			hooray: function() { /* happy happy joy joy */ },
+
+			destroy: function() {
+				//- 3. notify the game that my bird is dismissed from service
+				this.gameController.notify("bird-dismissed", {
+					hit: this.model.hitStatus,
+					id: this.model.birdId
+				});
+			}
+		})
+		return blueBird;
+	}
+)</pre>
+	
+</section>
+
+<section class="slide">
+	<h2>Step 6: The Game Controller (Core)</h2>
+	<h3>GameController.js</h3>
+	<pre class="brush: js">
+		var GameController = Backbone.Model.extend({
+			//- 1. notify events to the core game controller
+			notify: function (eventName, eventData) {
+				//- some validations statements, test, checks
+				this.handleEvents(eventName, eventData.data);
+			},
+			
+			//- 2. allow modules to listen to other events
+			listen: function (eventName, handler, scope) {...},
+			
+			//- 3. handle all events in one place
+			handleEvents: function(ev) {...},
+
+			//- modules operations
+			startAll: function(modules) { /**/ },
+
+			stopAll: function() { /**/ },
+
+			disableModule: function(moduleId) { /**/ },
+
+			enableModule: function(moduleId) { /**/ }
+		})
+	</pre>
+	
+</section>
+
+<section class="slide" id="step-7">
+	<h1>Step 7: Angry Bird Dummies</h1>
+</section>
+
+<section class="slide" id="testing">
+	<h2>Step 7: JS Unit Testing</h2>
+	<ul>
+		<li>Phantom.js</li>
+		<li>JsUnit.js</li>
+		<li>Many more...</li>
+	</ul>
+
+</section>
+
+<section class="slide">
+	<h2>Step 7: Phantom Bird</h2>
+	<h3>BlueAngryBirdTest.js</h3>
+	<pre class="brush: js">
+	var BlueAngryBirdTest = Backbone.View.extend({
+
+		initialize: function() {
+			//- 1. phantom object
+			var page = new WebPage();
+
+			//- 2. remember GameRouter?
+			var url = "myAngryBirds.com/levels/1/1";
+			
+			//- 3. callback to start playing
+			page.open(url, function (status) {
+				var twitty = new BlueAngryBird();
+				twitty.arm();
+				twitty.attack();
+			});
+		}
+	});
+	</pre>
+	
+</section>
+
+<!-- <section class="slide" id="summary-title">
+	<h1>Summary: Javascript Architecture</h1>
+</section> -->
+
+<section class="slide" id="future">
+	<h2>On The Long Term...</h2>
+	<h3>Concern for the future:</h3>
+	<ul>
+		<li>We have no idea how our application will grow (NZ)</li>
+		<li>Have Control in one place</li>
+		<li>Divide To Modules</li>
+		<li>Communicate through events</li>
+	</ul>
+	<img src="images/driven.jpg" alt=""/>
+</section>
+
+
+<!-- <section class="slide" id="moto">
+	<h2>Drive by Events - and be Modular!</h2>
+	<ul>
+		<li>every flow is an event</li>
+		<li>every change is an event</li>
+	</ul>
+</section> -->
+
+<section class="slide" id="the-end">
+	
+	<h1>Thank you!</h1>
+	<div>
+		<img class="size-443" src="images/the-end.jpg" alt=""/>
+	</div>
+	<p style="position: absolute; top: 20px; padding: 0 20px;">Credits: <a href="http://www.tikalk.com/">Tikal Techs</a>, mr doob chrome experiments</p>
+</section>
+
+<!-- deck.js controls -->
+<a href="#" class="deck-prev-link" title="Previous">&#8592;</a>
+<a href="#" class="deck-next-link" title="Next">&#8594;</a>
+
+<p class="deck-status">
+	<span class="deck-status-current"></span>
+	/
+	<span class="deck-status-total"></span>
+</p>
+
+<a href="." title="Permalink to this slide" class="deck-permalink">#</a>
+
+
+  <!-- Grab CDN jQuery, with a protocol relative URL; fall back to local if offline -->
+  <script src="js/jquery-1.7.min.js"></script>
+
+<!-- Deck Core and extensions -->
+<script src="core/deck.core.js"></script>
+<script src="extensions/hash/deck.hash.js"></script>
+<script src="extensions/menu/deck.menu.js"></script>
+<script src="extensions/goto/deck.goto.js"></script>
+<script src="extensions/status/deck.status.js"></script>
+<script src="extensions/navigation/deck.navigation.js"></script>
+
+<!-- Specific to this page -->
+<script src="introduction.js"></script>
+<script src="js/shCore.js"></script>
+<script src="js/shBrushJScript.js"></script>
+<script src="js/shBrushXml.js"></script>
+<script src="js/tikal.js"></script>
+<script>
+	var birdsDemos = [
+		{isShown: false, id: "red-demo", idFrame: "red-frame-demo", url: "demos/red.html"},
+		{isShown: false, id: "blue-demo", idFrame: "blue-frame-demo", url: "demos/blue.html"},
+		{isShown: false, id: "yellow-demo", idFrame: "yellow-frame-demo", url: "demos/yellow.html"}
+	];
+	debugger;
+	for (var i = 0; i < birdsDemos.length; i++) {
+		activateDemo(birdsDemos[i]);
+	};
+	function activateDemo (bird) {
+		$("#" + bird.id).on("click", function(){
+			if (!bird.isShown) {
+				$(this).text("Close");
+				$("#" + bird.idFrame).attr("src", bird.url);
+				bird.isShown = true;
+			} else {
+				$(this).text("Play!");
+				$("#" + bird.idFrame).attr("src", "");
+				bird.isShown = false;
+			}
+		});
+	}
+</script>
+
+</body>
+</html>

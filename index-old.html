@@ -1,0 +1,610 @@
+
+<!DOCTYPE html>
+<!--[if lt IE 7]> <html class="no-js ie6" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js ie7" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js ie8" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!-->  <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	
+	<title>OOP Javascript &amp; JS Architecture</title>
+	
+	<meta name="description" content="A jQuery library for modern HTML presentations">
+	<meta name="author" content="Caleb Troughton">
+	<meta name="viewport" content="width=1024, user-scalable=no">
+	
+	<!-- Core and extension CSS files -->
+	<link rel="stylesheet" href="core/deck.core.css">
+	<link rel="stylesheet" href="extensions/goto/deck.goto.css">
+	<link rel="stylesheet" href="extensions/menu/deck.menu.css">
+	<link rel="stylesheet" href="extensions/navigation/deck.navigation.css">
+	<link rel="stylesheet" href="extensions/status/deck.status.css">
+	<link rel="stylesheet" href="extensions/hash/deck.hash.css">
+	
+	<!-- Theme CSS files (menu swaps these out) -->
+	<link rel="stylesheet" id="style-theme-link" href="themes/style/web-2.0.css">
+	<link rel="stylesheet" id="transition-theme-link" href="themes/transition/horizontal-slide.css">
+	
+	<!-- Custom CSS just for this page -->
+	<link rel="stylesheet" href="css/introduction.css">
+	<link rel="stylesheet" href="css/tikal.css">
+	<link rel="stylesheet" href="css/shCore.css">
+	<link rel="stylesheet" href="css/shCoreDefault.css">
+	
+	<script src="js/modernizr.custom.js"></script>
+</head>
+
+<body class="deck-container">
+
+<div class="theme-menu">
+	<h2>Themes</h2>	
+	
+	<label for="style-themes">Style:</label>
+	<select id="style-themes">
+		<option selected value="themes/style/web-2.0.css">Web 2.0</option>
+		<option value="themes/style/swiss.css">Swiss</option>
+		<option value="themes/style/neon.css">Neon</option>
+		<option value="">None</option>
+	</select>
+	
+	<label for="transition-themes">Transition:</label>
+	<select id="transition-themes">
+		<option selected value="themes/transition/horizontal-slide.css">Horizontal Slide</option>
+		<option value="themes/transition/vertical-slide.css">Vertical Slide</option>
+		<option value="themes/transition/fade.css">Fade</option>
+		<option value="">None</option>
+	</select>
+</div>
+
+<section class="slide" id="title-slide">
+	<h1 id="title">OOP Javascript &amp; JS Architecture</h1>
+	<p>
+		Tikal TCE
+		Oren Farhi
+	</p>
+</section>
+
+<section class="slide" id="who-am-i">
+	<h2>Hi all. My name is Oren.</h2>
+	<ul>
+		<li>Javascript Expert (also a Front End - CSS, Html)</li>
+		<li>Javascript Group Leader at Tikal</li>
+		<li>A Dreamer</li>
+		<li>I like elegance &amp; minimalism when it comes to code</li>
+	</ul>
+</section>
+
+<section class="slide" id="agenda">
+	<h2>The Agenda</h2>
+	<ul>
+		<li>OOP Javascript</li>
+		<li>Classes</li>
+		<li>Polimorphism</li>
+		<li>Inheritance</li>
+		<li>Modules</li>
+		<li>JS Architecture - Frameworks</li>
+		<!-- <li>JS in the (near) future - "Harmony"</li> -->
+	</ul>
+</section>
+
+<!-- OOP Javascript -->
+<section class="slide" id="why-js-oop">
+	
+	<h2>Why Object Oriented Langauge?</h2>
+	
+	<ul>
+		<li>we want code reuse (inheritance)</li>
+		<li>we want to modularize our applications's objects (encapsulation)</li>
+		<li>easier maintainance</li>
+		<li>decoupling behaviors and responsibilities</li>
+	</ul>
+	
+</section>
+
+<section class="slide" id="is-js-oop">
+	
+	<h2>Is Javascript an Object Oriented Langaguge?</h2>
+	
+	<ul>
+		<li>Yes &amp; No.</li>
+		<li>Javascript is dynamic. Very dynamic.</li>
+		<li>It depends on YOU.</li>
+		<li>Let's cut to the chase...</li>
+	</ul>
+	
+</section>
+
+<section class="slide">
+	
+	<h2>Typical Javascript Code</h2>
+	
+	<pre class="brush: js">
+	//- angry bird actions
+	function throwBird (birdObj) {
+		console.log(birdObj.name + " was thrown...")
+		shoutWithBird(birdObj)
+	};
+	function shoutWithBird (birdObj){
+		console.log("I'm the " + birdObj.color + " angry bird!")
+	};
+	function loadWeaponsToBird (birdObj) {
+		birdObj.weapons = ["bomb", "machine-gun"];
+	};
+	function armBird (birdObj, isThrow) {
+		loadWeaponsToBird(birdObj);
+		if (isThrow) {
+			throwBird(birdObj);
+		}
+	};
+	//- get an angry bird and throw it
+	var redhatAngryBird = $("#redBird");
+	redhatAngryBird.color = "red";
+	redhatAngryBird.name = "redhat";
+	redhatAngryBird.onclick = function(evt){
+		armBird(this, true);
+	}
+	//- now we'll need to write the same for jackBlackBird</pre>
+	<h2 class="slide wrong" id="not-oop">this is not oop</h2>
+	<h2 class="slide">How do we make it OOP?</h2>
+</section>
+
+<!-- JS Class -->
+
+<section class="slide">
+	<h2>Lets define a class</h2>
+	<div class="slide">
+		<pre class="brush: js">
+		//- define an angry bird class - also - constructor
+		function AngryBird(id, name, color) {
+			this.id = id;
+			this.name = name;
+			this.color = color;
+		}</pre>
+	</div>
+	<div class="slide">
+		<pre class="brush: js">
+		//- define methods for our angry bird
+		AngryBird.prototype = {
+			attack: function(){
+				console.log(this.name + " was thrown...");
+			},
+			shout: function() {
+				console.log("I'm the " + birdObj.color + " angry bird!");
+			},
+			loadWeapons: function() {
+				this.weapons = ["bomb", "machine-gun"];
+			},
+			arm: function(isThrow) {
+				this.loadWeapons();
+				if (isThrow) {
+					this.attack();
+				}
+			}
+		}
+		//- use angry bird
+		var redhatBird = new AngryBird("redBird", "redhat", "red");
+		redhatBird.arm(true);</pre>
+	</div>
+</section>
+
+<section class="slide" id="js-is">
+	
+	<h2>Javascript is:</h2>
+	
+	<ul>
+		<li>A Prototype Based Langauge</li>
+		<li>made of objects which inherits from the <code>Object</code> type</li>
+	</ul>
+	
+	<h2 class="slide">Functions Usecases</h2>
+	<ul class="slide">
+		<li>classes are made of a <code>functions</code></li>
+		<li>methods are made of <code>functions</code> as well</li>
+		<li>Has: constructor, properties, privates, Inheritance, Polimorphism, Encapsulation</li>
+	</ul>
+	
+</section>
+
+<!-- Inheritance Pseudo -->
+
+<section class="slide">
+	<h2>Inheritance - Pseudo Classical Inheritance</h2>
+	<p>Objects inherit directly from objects</p>
+	<div class="slide"><pre class="brush: js">
+		//- constructor
+		function AngryBirdCommander(id, name, color) {
+			this.id = id;
+			this.name = name;
+			this.color = color;
+		}</pre></div>
+	<div class="slide">
+			<pre class="brush: js">
+				//- inherit AngryBird methods
+				AngryBirdCommander.prototype = new AngryBird();
+				//- augment AngryBirdCommander with new methods
+				AngryBirdCommander.prototype.gatherBirds = function() { 
+					console.log("get in line birds!") 
+				};
+				AngryBirdCommander.prototype.demandBird = function(birdId) { 
+					console.log("yes bird!") 
+				};</pre>
+		</div>
+	<div class="slide">
+		<pre class="brush: js">
+			//- use AngryBirdCommander
+			var commander = new AngryBirdCommander(114, "one-eye-bird", "smoke");
+			commander.gatherBirds(); //- "get in line birds!"
+			commander.demandBird(); //- "yes bird!"
+			commander.attack(); //- AngryBird function invokes
+		</pre>
+	</div>
+</section>
+
+<section class="slide" style="position:relative">
+	<h2>Inheritance - Privacy &amp; Power Constructor</h2>
+	<p>Inheritance with Functional pattern</p>
+	<ul>
+		<li>create a new instance of the inherited class</li>
+		<li>augment with new methods, wrapper methods, etc</li>
+		<li>expose whatever API (custom or augemented)</li>
+	</ul>
+	<img src="images/black_angry_birds.jpg" style="position: absolute;right: 48px;top: 65px;width: 20%;"/>
+	<div class="slide" style="position: relative">
+		<pre class="brush: js">
+			//- my custom bird
+			var BombBird = function() {
+				var bird = AngryBirdsAcademy.create(BirdTypes.HEAD_BIRD),
+					bomb = WeaponsFactory.getBomb();
+				//- new method for our custom bird
+				var explode = function() { /* cool exploding animation */ };
+				
+				//- augmenting armBird method
+				var armBird = function() {
+					bird.armBird(bomb);
+				};
+				
+				//- privileged methods - new API
+				return {
+					explode: explodeBird,
+					attack: bird.attack,
+					shout: bird.shout,
+					arm: armBird
+				}
+			}
+			var blackBird = AngryBirdsAcademy.create(BirdTypes.BOMB_BIRD);
+			blackBird.attack(); //- invokes the black bird's "attack" function
+			blackBird.armBird(); //- invokes the "BombBird" armBird function
+			blackBird.explode(); //- invokes the new function explode
+		</pre>
+	</div>
+</section>
+
+<!-- Recap - Classes &amp; Inheritance -->
+	
+<section class="slide" id="js-classes">
+	<h2>Recap - Classes &amp; Inheritance</h2>
+	<p>There are several ways to create a Class in JS:</p>
+	<ul>
+		<li>
+			<h4>using the <code>new</code> constructor</h4>
+			<aside>This is actually a new <code>Type</code> in javascript (like Date, Array, String etc..)</aside>
+<pre class="brush: js">
+	var jimmyRedhat = new AngryBird("jimmy", "red", 5);
+</pre>
+		</li>
+		<li class="slide">
+			<h4>using power constructor (closure)</h4>
+			<aside>This is actually function constructor which returns a full copy of it</aside>
+<pre class="brush: js">
+	var richardBlue = AngryBird({
+		name: "richard",
+		color: "blue",
+		endurance: 5
+	})
+</pre>
+		</li>
+		<li class="slide">
+			<h4>using the <code>Object</code> litteral way:</h4>
+			<aside>which is a sort of "singleton", thus - cannot be instantiated</aside>
+<pre class="brush: js">
+	var jackBlack = {
+		name: "jack",
+		color: "black",
+		endurance: 8
+	}
+</pre>
+		</li>
+	</ul>
+</section>
+
+<!-- Singleton -->
+
+<section class="slide">
+	<h2>The Singleton - in Javascript</h2>
+	<pre class="brush: js">
+		var AngryBirdsAcademy = {
+			createBird: function(bird) {...},
+			trainBird: function(bird) {...},
+			dressBird: function(bird) {...}
+		}
+	</pre>
+	<h2 class="slide">what is missing?</h2>
+	<div class="slide">
+		<ul>
+			<li>private methods &amp; variables</li>
+			<li>running some operations within</li>
+		</ul>
+		<img src="images/angry-birds-wall.jpg" style="float: left; width: 35; box-shadow: 0 0 20px black"/>
+	</div>
+</section>
+
+<section class="slide">
+	<h2>The Complete Experience for Singleton</h2>
+	<p>Ensure one instance only</p>
+	<div class="slide">
+		<pre class="brush: js">
+			//- function is instantiated only once
+			var AngryBirdsAcademy = ( function() {
+				//- these are private properties
+				var privatePassword = "pakaaaa";
+				var privateBirdTraining = function(password) {
+					return password === privatePassword;
+				};
+				
+				//- these are public through the "return" value
+				var createBird = function() {...};
+				var trainBird = function(bird) {...};
+				var dressBird = function(bird) {...};
+				
+				//- return value is an object
+				return {
+					create: createBird,
+					train: trainBird,
+					dress: dressBird
+				}
+			} () );
+			var redBird = AngryBirdsAcademy.create(BirdTypes.HEAD_BIRD); //- an instance
+			AngryBirdsAcademy.privateBirdTraining("yay"); //- error - method undefined
+		</pre>
+	</div>
+</section>
+
+<!-- Static Members -->
+
+<section class="slide" id="">
+	<h2>Static Members in Javascript</h2>
+	<ul>
+		<li>Define a Class</li>
+		<li>Add the static method/variable to it, literaly</li>
+	</ul>
+	<pre class="brush: js">
+		function AngryBird() { /*....*/ };
+		//- static method
+		AngryBird.isTrained = function() { /*.....*/ };
+		//- static variable
+		AngryBird.numberOftrainedBirds = 233;
+	</pre>
+</section>
+
+<section class="slide">
+	
+	<h2>Basic Polimorphism in JS</h2>
+	<ul>
+		<li>Do a set of operations with any given prototype</li>
+		<li>Differrent Data Types should be handled with a uniform interface</li>
+	</ul>
+
+	<div class="slide">
+		<pre class="brush: js">
+			/**
+			 * @param {AngryBird/AngryBirdCommander} bird
+			 */
+			function BirdsThrower(bird) {
+				//- bird -> AngryBird / AngryBirdCommander
+				bird.prepare();
+				bird.arm();
+				bird.attack();
+			}</pre>
+		<img src="images/angry_birds_types.png" style="width: 30%; float: left;background-color: rgba(0, 0, 0, .5);box-shadow: 0 0 10px black;"/>
+	</div>
+	
+</section>
+
+<section class="slide">
+	<h2>Polimorphism - function overload in js</h2>
+	<p>One function to rule them all...</p>
+	<div class="slide">
+		<pre class="brush: js">
+			function BirdsThrower() {
+				var amountOfArguments = arguments.length;
+				switch (amountOfArguments) {
+					case 1: 
+						attackWithOneBird(); 
+						break;
+					
+					case 2: 
+						handelBirdsWithPossibleCallback(arguments.slice()); 
+						break;
+				}
+			}
+			//- usecase
+			BirdsThrower(jackBlackBird);
+			BirdsThrower(jackBlackBird, myCallbackFunction);</pre>
+	</div>
+	
+	<div class="slide">
+		<pre class="brush: js">
+			function BirdsThrower(oEntity) {
+				var isAngryBirdCommander = typeof oEntity == "function";
+				if (isAngryBirdCommander) {
+					attackWithOneBird(oEntity);
+				} else {
+					handelBirdsWithPossibleCallback(arguments.slice());
+				}
+			}</pre>
+	</div>
+	
+</section>
+
+<!-- Frameworks -->
+
+<section class="slide">
+	<h2>Where is my Classical OOP Javascript?</h2>
+	<p>There are quite a few libraries that let you write in classical oop style</p>
+	<ul>
+		<li>Class.create( {methods..} )</li>
+		<li>Class.extend( parent, {methods...})</li>
+		<li>Class.method( "methodName", function(){...} )</li>
+		<li>MVC - Model, View, Controller</li>
+		<li>MVP - Model, View, Presenter</li>
+	</ul>
+	
+</section>
+
+<section class="slide">
+	<h2>Frameworks to the rescue</h2>
+	<ul>
+		<li>Backbone.js - MVC/MVP style framework</li>
+		<li>Spine.js - MVC style framework</li>
+		<li>YUI 3 App Framework - MVC style framework</li>
+		<li>Sencha - web &amp; mobile</li>
+		<li>Sproutcore</li>
+		<li>right.js - oop framework with jquery inspiration</li>
+		<li>Enyo (2012) - oop framework, open sourced by HP</li>
+		<li>Your very own custom framework</li>
+	</ul>
+	
+</section>
+
+<section class="slide">
+	
+	<h1>Thank you!</h1>
+	<h2>Credits</h2>
+	<ul>
+		<li>Javascript Patterns / Stoyan Stefanov</li>
+		<li>Javascript - The Good Parts / Douglas Crockford</li>
+		<li>Javascript Web Applications / Alex Mccaw</li>
+	</ul>
+</section>
+<!-- OLD SLIDES -->
+
+<!-- <section class="slide" id="js-proto">
+	<h2>A Prototype Based Langauge</h2>
+		<ul>
+			<li>classes are not present</li>
+			<li>inheritance is done by decorating exisitng objects (prototypes)</li>
+			<li>An Object contains a secret link to another object</li>
+		</ul>
+		<pre class="brush: js">
+			//- put here an example of secrete link?
+			//- add scope?
+		</pre>
+</section> -->
+
+<!-- The New Constructor -->
+<!-- <section class="slide" id="using-new-class">
+	<h2>Class with the "new" Constructor</h2>
+			<h4>the scope "this" might change when using callbacks for events (i.e)</h4>
+			<aside>Solution: use "bind" to run a callback in the object's scope</aside>
+<pre class="brush: js">
+AngryBird.prototype = {
+	attachEvents: function() {
+		div.addEventListener("click", this.onBirdClick.bind(this), false);
+	},
+	onBirdClick: function(evt){
+		console.log(this.name + " was clicked");
+	}
+}
+</pre>
+</section> -->
+
+<!-- The Power Constructor -->
+<!-- <section class="slide">
+	<h2>Class with power constructor (closure)</h2>
+<div class="slide">
+<pre class="brush: js">
+function AngryBird(props) {
+	var name = props.name,
+		color = props.color,
+		endurance = props.endurance;
+	
+	//- methods declarations
+	var throw = function() {
+		console.log(name + " was thrown...")
+	};
+	
+	var shout = function(){
+		console.log("I'm the " + color + " angry bird!")
+	};
+	
+	var arm = function() {
+		_loadWeapons();
+		throw();
+	};</pre>
+<div class="slide">
+<pre class="brush: js">//- defining the public API methods
+	return {
+		throw: throw,
+		shout: shout,
+		arm: arm
+	}
+}</pre>
+</div>
+</div>
+</section> -->
+
+<!-- <section class="slide">
+	<h2>Classes - Power Constructors - how to use?</h2>
+	<pre class="brush: js">
+		var jackBlack = AngryBird({name: "jack", color: "black", endurance: 8});
+		jackBlack.shout(); //- logs: "I'm the black angry bird"
+		jackBlack._loadWeapons(); //- Exception: Object has no method "_loadWeapons"
+	</pre>
+	<h2>Advantages</h2>
+	<ul class="slide">
+		<li>private variables &amp; methods are cooked inside</li>
+		<li>no issues with scope</li>
+		<li>inheritance is stright forward and acts as a wrapper</li>
+	</ul>
+</section> -->
+
+<!-- deck.js controls -->
+<a href="#" class="deck-prev-link" title="Previous">&#8592;</a>
+<a href="#" class="deck-next-link" title="Next">&#8594;</a>
+
+<p class="deck-status">
+	<span class="deck-status-current"></span>
+	/
+	<span class="deck-status-total"></span>
+</p>
+
+<form action="." method="get" class="goto-form">
+	<label for="goto-slide">Go to slide:</label>
+	<input type="text" name="slidenum" id="goto-slide" list="goto-datalist">
+	<datalist id="goto-datalist"></datalist>
+	<input type="submit" value="Go">
+</form>
+
+<a href="." title="Permalink to this slide" class="deck-permalink">#</a>
+
+
+  <!-- Grab CDN jQuery, with a protocol relative URL; fall back to local if offline -->
+  <script src="js/jquery-1.7.min.js"></script>
+
+<!-- Deck Core and extensions -->
+<script src="core/deck.core.js"></script>
+<script src="extensions/hash/deck.hash.js"></script>
+<script src="extensions/menu/deck.menu.js"></script>
+<script src="extensions/goto/deck.goto.js"></script>
+<script src="extensions/status/deck.status.js"></script>
+<script src="extensions/navigation/deck.navigation.js"></script>
+
+<!-- Specific to this page -->
+<script src="introduction.js"></script>
+<script src="js/shCore.js"></script>
+<script src="js/shBrushJScript.js"></script>
+<script src="js/tikal.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,48 @@
+/* Fonts */
+@font-face {
+    font-family: 'AngryBirds';
+    src: url('AngryBirdsFont.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+/* slides */
+#title {
+	margin-top: -200px;
+}
+/* syntax */
+body {
+    background: transparent url(images/angry-birds-wallpaper-11.jpg) no-repeat bottom left;
+    background-size: cover;
+}
+/* general */
+.slide h2, .slide  h1,
+.deck-container .slide h2, .deck-container .slide  h1{
+	font-family: AngryBirds !important;
+	color: white;
+	text-shadow: 3px 0px 5px black;
+	color: white;
+	font-weight: normal;
+	background-color: rgba(0, 0, 0, 0.3);
+	padding: 10px;
+}
+
+code {
+	white-space:pre-wrap;
+	font-size: 85% !important;
+	font-family: consolas !important;
+}
+.deck-container:not(.deck-menu) > .slide .deck-before, 
+.deck-container:not(.deck-menu) > .slide .deck-previous {
+	opacity: 1 !important;
+}
+.wrong {color :red !important}
+
+#not-oop {
+	margin-top: -140px;
+	margin-left: 659px;
+}
+/* theme-menu widget */
+.theme-menu { cursor:pointer; }
+.theme-menu:hover h2 {background: #777; text-shadow: 0 0 5px #fff}
+.theme-menu.closed label, .theme-menu.closed select { display: none; }
+/* /theme-menu widget */
