@@ -436,7 +436,7 @@ var Mouse = {
 							createAngryBird(mouse.x + 250, mouse.y - 100, "blue", true);
 							createAngryBird(mouse.x + 230, mouse.y - 100, "blue", true);
 							bird.parentNode.removeChild(bird);
-						}, 150);
+						}, 10);
 					}
 					
 				}

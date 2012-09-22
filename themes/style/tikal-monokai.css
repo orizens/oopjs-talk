@@ -241,3 +241,14 @@ background-size: cover;
   -moz-box-shadow: 0 0 20px #11f, 0 0 5px #fff;
   box-shadow: 0 0 20px #11f, 0 0 5px #fff;
 }
+
+
+.slide .demo-title {
+  position: absolute;
+  font-size: 8em;
+  z-index: 10;
+}
+.slide .demo-container {
+  position: relative;
+  z-index: 11;
+}
