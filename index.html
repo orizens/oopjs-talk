@@ -128,8 +128,11 @@
 
 	<h3>Front End Architect &amp; JS Engineer @Tikal</h3>
 	<ul>
+		<li>Javascript Developer</li>
+		<li>Backbone.js, Underscore, jQuery</li>
 		<li><a href="http://orizens.com">orizens.com</a></li>
 		<li><a href="http://twitter.com/orizens">@orizens</a></li>
+		<li><a href="http://github.com/orizens">github - orizens</a></li>
 	</ul>
 
 </section>
@@ -141,7 +144,7 @@
 	<h3>Tikal is a leading provider of open source solutions</h3>
 	
 	<ul>
-		<li>employing more than 80 software experts (ALM, JS, Java, Ruby, .NET)</li>
+		<li>employing more than 80 software experts (ALM, JS, Java, Ruby, .NET, Mobile)</li>
 		<li>software stacks</li>
 		<li>workshops</li>
 		<li>subscription for software development</li>
@@ -181,10 +184,6 @@
 </section>
 
 <section class="slide" id="lets-play">
-	<div id="bblack" class="bird-attack angry-bird"><img src="images/black.png" width="70px" height="80px"/></div>
-	<div id="bred" class="bird-attack-low angry-bird"><img src="images/red.png" width="70px" height="60px"/></div>
-	<div id="byellow" class="bird-attack-yellow angry-bird"><img src="images/yellow.png" width="70px" height="60px"/></div>
-	<div id="bblue" class="bird-attack-low2 angry-bird"><img src="images/blue.png" width="70px" height="60px"/></div>
 	<h1>Lets Play!</h1>
 </section>
 
@@ -364,8 +363,8 @@ BlueAngryBird.prototype.split = function() {
 }</pre></div>
 <div class="slide"><pre class="brush: js">//- 5. create the bird
 var twitter = new BlueAngryBird("#twitter", {name: "twitter"});
-console.log(twitter.color); //- outputs "blue"
-twitter.arm(); //- invokes the special method</pre></div>
+twitter.color;	// outputs "blue"
+twitter.arm();	// invokes the new method</pre></div>
 	
 </section>
 
@@ -392,13 +391,15 @@ twitter.arm(); //- invokes the special method</pre></div>
 
 	poof: function() {
 		//- fires change events when data change 
-		this.save({isDismissed: true});
+		this.set({isDismissed: true});
 	}
 });</pre>
 	</div>
 
 	<div class="slide"><pre class="brush: js">var redModel = new RedBirdModel( birdProperties );
-console.log( redModel.get("isAttacked") ); //- outputs "false"
+
+redModel.get("isAttacked") // returns "false"
+
 var redhat = new RedBirdView({ model: redModel });</pre>
 	</div>
 
@@ -417,7 +418,7 @@ var redhat = new RedBirdView({ model: redModel });</pre>
 		this.model.on('change', this.render, this);
 	},
 
-	render: function() { ... }
+	render: function() { ... },
 
 	attack: function() {
 		if (this.model.isAttacked()) {
@@ -523,18 +524,22 @@ var birdHtml = _.template( birdTemplateString, birdData );
 "text!templates/bird.html"],
 
 function($, _, B, AngryBird, birdTemplate) {</pre>
-<div class="slide"><pre class="brush: js">	  var birdSpeed = 2;
-		//- YELLOW BIRD
-		var yellowBird = AngryBird.extend({
-		arm: function() {...},
-		
-		flyFast: function () {
-			birdSpeed *= 2;
-			this.fly();
-		}
-	})
+<div class="slide"><pre class="brush: js">			//- private variable
+			var birdSpeed = 2;</pre></div>
 
-	return yellowBird;
+<div class="slide">
+	<pre class="brush:js">
+	//- YELLOW BIRD
+	var yellowBird = AngryBird.extend({
+	arm: function() {...},
+	
+	flyFast: function () {
+		birdSpeed *= 2; //- reference to private
+		this.fly();
+	}
+})
+
+return yellowBird;
 })</pre></div>
 </section>
 
@@ -561,8 +566,8 @@ function(yellowBird) {
 <section class="slide">
 	<h2>Step 5: Rundown</h2>
 	<ul>
-		<li>Url Location Bar</li>
-		<li>Local Storage</li>
+		<li>Url based Navigation</li>
+		<li>Using Local Storage</li>
 	</ul>
 	<img src="images/levels-menu.jpg" />
 </section>
@@ -618,32 +623,31 @@ var GameMenuManager = Backbone.View.extend({
 </section>
 
 <section class="slide" id="storage">
-	<h2>Step 5: HTML5's Storing Data</h2>
+	<h2>Step 5: HTML5's Storing Data with Backbone.Safe</h2>
 	<h3>GameStorage.js</h3>
 	<pre class="brush: js">
 //- Game Storage Module
 define([ "libs/jquery", "libs/underscore", "libs/backbone",
-	"libs/Store"
-	function($, _, B, Store) {
-		var GameStorage = Backbone.Model.extend({
+	"libs/backbone/safe"
+	function($, _, B, Safe) {
+		var GameStorage = Backbone.Model.extend({</pre>
+	<div class="slide"><pre class="brush: js">// define Safe
+		initialize: function() {
+			Backbone.Safe.create("angry-birds-levels", this);
+		},</pre></div>
+	<div class="slide"><pre class="brush:js">		
+				setLevelSuccess: function(level, isPassed, score) { 
+					this.set({
+						level: level,
+						isPassed: isPassed,
+						score: score
+					});
+				}
+			})
 			
-			// Saves user details, score, success
-			localStorage: new Store("angry-birds"),
-			
-			setLevelSuccess: function(level, isPassed) { 
-				this.save({
-					level: level,
-					isPassed: isPassed
-				});
-			},
-
-			setScore: function(level, score) {
-				/*...*/
-			}
-		})
-		
-		return GameStorage;
-})</pre>
+			return GameStorage;
+		})</pre>
+	</div>
 	
 </section>
 
