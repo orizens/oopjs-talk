@@ -669,32 +669,33 @@ define([ "libs/jquery", "libs/underscore", "libs/backbone",
 	<h2>Step 6: The Game Controller - Usage</h2>
 	<h3>BlueAngryBird.js</h3>
 	<div class="slide">
-		<pre class="brush: js">define([ "some-depended-files "], function($, _, B, AngryBird, birdTemplate) {
+		<pre class="brush: js">define([ "some-depended-files "], 
+	function($, _, B, AngryBird, birdTemplate) {
 	
-var blueBird = AngryBird.extend({
-	
-	initialize: function(gameController) {
-		//- 1. listen to Game Events
-		this.gameController = gameController;
-		gameController.on("bird-success-hit", this.hooray, this);
-	},
+	var blueBird = AngryBird.extend({
+		
+		initialize: function(gameController) {
+			//- 1. listen to Game Events
+			this.gameController = gameController;
+			gameController.on("bird-success-hit", this.hooray, this);
+		},
 
-	hooray: function() { /* happy happy joy joy */ },</pre>
+		hooray: function() { /* happy happy joy joy */ },</pre>
 </div>
 
 <div class="slide">
 	<pre class="brush: js">
-	attack: function() {
-		//- 2. notify the game
-		if (this.model.get('isSuccessAttack')) {
-			this.gameController.trigger("bird-success-hit", this.model.birdId);
-		}
-	},
-	
-	
-	})
-	return blueBird;
-})</pre></div>
+		attack: function() {
+			//- 2. notify the game
+			if (this.model.get('isSuccessAttack')) {
+				this.gameController.trigger("bird-success-hit", this.model.birdId);
+			}
+		},
+		
+		
+		})
+		return blueBird;
+	})</pre></div>
 	
 </section>
 
