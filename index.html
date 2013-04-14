@@ -642,12 +642,11 @@ var GameMenuManager = Backbone.View.extend({
 //- Game Storage Module
 define([ "libs/jquery", "libs/underscore", "libs/backbone",
 	"libs/backbone/safe"
-	function($, _, B, Safe) {
+	function($, _, Backbone, Safe) {
 		var GameStorage = Backbone.Model.extend({</pre>
 	<div class="slide"><pre class="brush: js">// define Safe
-		initialize: function() {
-			Backbone.Safe.create("angry-birds-levels", this);
-		},</pre></div>
+		
+		safe: "angry-birds-levels",</pre></div>
 	<div class="slide"><pre class="brush:js">		
 				setLevelSuccess: function(level, isPassed, score) { 
 					this.set({
