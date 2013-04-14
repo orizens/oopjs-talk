@@ -137,7 +137,7 @@
 
 </section>
 
-<section class="slide " id="tikal">
+<section class="slide" id="tikal">
 	<h2>Tikal</h2>
 
 	<img src="images/tikal-logo.png">
@@ -642,12 +642,11 @@ var GameMenuManager = Backbone.View.extend({
 //- Game Storage Module
 define([ "libs/jquery", "libs/underscore", "libs/backbone",
 	"libs/backbone/safe"
-	function($, _, B, Safe) {
+	function($, _, Backbone, Safe) {
 		var GameStorage = Backbone.Model.extend({</pre>
 	<div class="slide"><pre class="brush: js">// define Safe
-		initialize: function() {
-			Backbone.Safe.create("angry-birds-levels", this);
-		},</pre></div>
+		
+		safe: "angry-birds-levels",</pre></div>
 	<div class="slide"><pre class="brush:js">		
 				setLevelSuccess: function(level, isPassed, score) { 
 					this.set({
@@ -675,6 +674,7 @@ define([ "libs/jquery", "libs/underscore", "libs/backbone",
 	<div>
 		<img src="images/flow-chart-controller.png" />
 	</div>
+
 </section>	
 
 <section class="slide">
