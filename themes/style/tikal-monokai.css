@@ -251,4 +251,5 @@ background-size: cover;
 .slide .demo-container {
   position: relative;
   z-index: 11;
+  height: 550px !important;
 }
